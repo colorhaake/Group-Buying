@@ -181,7 +181,11 @@ View就是一個pure View/Component，View只管兩件事
 負責處理Action的部分就會更新state，並且回傳新的state和他要做的side effects  
 Framework會去執行side effects，執行完畢會去執行side effects完的action  
 action會在去變更state。View聽到state的變化，就會在重新顯示新的View
-
+所以完整的flow就是  
+```
+View -> (透過Action) -> handle action and update Model -> View -> ...
+													  -> do side effects -> handle action and update Model -> ...
+```													
 上述我講的所有東西大致上就是[Elm](http://elm-lang.org/)的[架構](https://guide.elm-lang.org/architecture/)  
 Redux是受到Elm的啟發所開發出來的Framework, 但是處理side effects的部分我覺得沒有很好。而[Redux-Loop](https://github.com/redux-loop/redux-loop)為模擬Elm中處理Side effects的部分，可以用Redux-Loop完成處理Side effects
 
