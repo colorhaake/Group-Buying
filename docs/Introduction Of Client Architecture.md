@@ -172,10 +172,10 @@ function handleFailureAction(payload, state) {
 }
 ```
 	
-所以說整個Client的架構會變得很簡單
-View就是一個pure View/Component，View只管兩件事
-1. state變化，顯示什麼樣的View.
-2. 先點擊View就送Action出去
+所以說整個Client的架構會變得很簡單  
+View就是一個pure View/Component，View只管兩件事  
+1. state變化，顯示什麼樣的View.  
+2. 先點擊View就送Action出去  
 他也不知道Action會做什麼樣的事，因此View就變得非常的單純，沒有額外的負任。
 
 負責處理Action的部分就會更新state，並且回傳新的state和他要做的side effects
