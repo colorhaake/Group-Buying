@@ -1,8 +1,8 @@
 ## 理想的情況底下，我覺得client的架構應該有下面幾個特點
 ### Pure View/Component
-所謂的Pure View/Component指的是外部給他什麼樣的資料，他就顯示什麼樣的View
-裡面沒有儲存state
-(state指的是任何一種資料, 像是我們可能會存說現在訂單的資料、Leader是誰，有下標的人是誰等等)
+所謂的Pure View/Component指的是外部給他什麼樣的資料，他就顯示什麼樣的View  
+裡面沒有儲存state  
+(state指的是任何一種資料, 像是我們可能會存說現在訂單的資料、Leader是誰，有下標的人是誰等等)  
 
 用React舉例來說以下就是一個Pure View/Component
 ```
@@ -44,19 +44,19 @@ class Clock extends React.Component {
 }
 ```
 ## 為什麼Pure View/Component是比較好的呢？
-以上面的例子來看，如果有其他的function去呼叫到`tick()` 那麼state的值就會被改變, 顯示的View也會跟著改
-如果這個時候顯示出來的View不是你要的話，你就要花時間一個一個去檢查變更state的邏輯。看到底是哪裡出錯了
+以上面的例子來看，如果有其他的function去呼叫到`tick()` 那麼state的值就會被改變, 顯示的View也會跟著改  
+如果這個時候顯示出來的View不是你要的話，你就要花時間一個一個去檢查變更state的邏輯。看到底是哪裡出錯了  
 
-而如果是Pure View/Component的話，就只要檢查給的Props值是不是對的，然後在看顯示View的邏輯有沒有問題就好
+而如果是Pure View/Component的話，就只要檢查給的Props值是不是對的，然後在看顯示View的邏輯有沒有問題就好  
 
-當然，非常重要一點，並不可能所有的View都是Pure View，一般我們還是會在View裡面存一些state
-盡可能的是UI state，像是存說Checkbox現在是on/off。每點擊一次Checkbox，變更裡面的UI state
+當然，非常重要一點，並不可能所有的View都是Pure View，一般我們還是會在View裡面存一些state  
+盡可能的是UI state，像是存說Checkbox現在是on/off。每點擊一次Checkbox，變更裡面的UI state  
 更進階一點的，我們會分成[Presentational and Container Components](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0#.6q34yupfg)，這個就有空在看看
 
 
 ### Single State
-Single state的意思是，我們整個client全部儲存一個共用的state，裡面存說整個client會用到的全部資料
-更實際一點的來說，一個state就是一個大大的JSON Object就是了
+Single state的意思是，我們整個client全部儲存一個共用的state，裡面存說整個client會用到的全部資料  
+更實際一點的來說，一個state就是一個大大的JSON Object就是了  
 ```
 // for example
 {
@@ -69,9 +69,9 @@ Single state的意思是，我們整個client全部儲存一個共用的state，
 當然並不是所有的東西都要存在這個Single state上，盡可能的存整個client會用到的資料就好。一些簡單的UI state就交給Container component去暫時儲存就好
 
 ### 只能透過Action去變更Single State
-要變更State也不是說可以亂變更，一般會發送一個Action, Action裡面會定義說要做的行為是什麼，也可以夾帶一些資料
-接著處理Action的部分(在redux中稱作reducer)，會根據收到的Action，做變更State的動作。
-Action在Javascript中也只是一個Object, 裡面定義他的type是什麼，還有額外要帶的資料。
+要變更State也不是說可以亂變更，一般會發送一個Action, Action裡面會定義說要做的行為是什麼，也可以夾帶一些資料  
+接著處理Action的部分(在redux中稱作reducer)，會根據收到的Action，做變更State的動作。  
+Action在Javascript中也只是一個Object, 裡面定義他的type是什麼，還有額外要帶的資料。  
 ```
 // Action example
 {
@@ -83,9 +83,9 @@ Action在Javascript中也只是一個Object, 裡面定義他的type是什麼，�
 View -> (透過Action) -> (update)Model -> View -> ...
 
 ### Signle State必須是Immutable
-我們要設計成任何變更State的動作，都會回傳一個新的State Object
-所謂的Immutable, 更明確的說是Immutable Object, 指的是資料是不可變更的，如果要變更就要回傳一個新的Object
-新的Object和舊的Object所指向的memory位置是不一樣的。
+我們要設計成任何變更State的動作，都會回傳一個新的State Object  
+所謂的Immutable, 更明確的說是Immutable Object, 指的是資料是不可變更的，如果要變更就要回傳一個新的Object  
+新的Object和舊的Object所指向的memory位置是不一樣的。  
 舉例來說
 ```
 // a is mutable
@@ -118,8 +118,8 @@ b.data = 100
 詳細可以看一下[Mutable vs immutable objects](http://stackoverflow.com/questions/214714/mutable-vs-immutable-objects)
 
 ### 任何變更Single State的動作就僅僅變更Single State和定義Side effects，不能直接執行Side effects
-這個部分比較抽象一點，最後我會給一個完整的例子，會比較清楚完整的架構
-先定義什麼是Side effects。任何變更state的行為就稱為Side effects，或者可以參考[wiki的定義](https://en.wikipedia.org/wiki/Side_effect_(computer_science))
+這個部分比較抽象一點，最後我會給一個完整的例子，會比較清楚完整的架構  
+先定義什麼是Side effects。任何變更state的行為就稱為Side effects，或者可以參考[wiki的定義](https://en.wikipedia.org/wiki/Side_effect_(computer_science))  
 談到Side effects就會提到pure funciton
 ```
 function pure(number) {
@@ -131,8 +131,8 @@ function nonPure(number) {
 	return result
 }
 ```
-上面的pure function，他的回傳值完全取決於function的參數
-而下面的nonPure function，callApi是一個不確定的因素，server可能會回傳各種結果
+上面的pure function，他的回傳值完全取決於function的參數  
+而下面的nonPure function，callApi是一個不確定的因素，server可能會回傳各種結果  
 導致nonPure function不能輕易的被預測，很容易產生bug。nonPure function也就沒有辦法根據他給的參數，來決定他的回傳值
 所以說一般像call api、寫log、寫檔讀檔的IO動作、需要外部動作跟這個function無關的行為，我們會稱他作是Side effects。
 
@@ -178,21 +178,21 @@ View就是一個pure View/Component，View只管兩件事
 2. 先點擊View就送Action出去  
 他也不知道Action會做什麼樣的事，因此View就變得非常的單純，沒有額外的負任。
 
-負責處理Action的部分就會更新state，並且回傳新的state和他要做的side effects
-Framework會去執行side effects，執行完畢會去執行side effects完的action
+負責處理Action的部分就會更新state，並且回傳新的state和他要做的side effects  
+Framework會去執行side effects，執行完畢會去執行side effects完的action  
 action會在去變更state。View聽到state的變化，就會在重新顯示新的View
 
-上述我講的所有東西大致上就是[Elm](http://elm-lang.org/)的[架構](https://guide.elm-lang.org/architecture/)
+上述我講的所有東西大致上就是[Elm](http://elm-lang.org/)的[架構](https://guide.elm-lang.org/architecture/)  
 Redux是受到Elm的啟發所開發出來的Framework, 但是處理side effects的部分我覺得沒有很好。而[Redux-Loop](https://github.com/redux-loop/redux-loop)為模擬Elm中處理Side effects的部分，可以用Redux-Loop完成處理Side effects
 
-所以說Redux + Redux-Loop = Elm
-Client我會以Redux + Redux-Loop去實現
+所以說Redux + Redux-Loop = Elm  
+Client我會以Redux + Redux-Loop去實現  
 
 ## 參考
-如果要學習Redux，強力建議先看下面的Tutorial Video，他的講解清析易懂
-[Redux Tutorial Video](https://egghead.io/courses/getting-started-with-redux)
-[Redux中文教學](https://chentsulin.github.io/redux/index.html)
-[Redux GitHub](https://github.com/reactjs/redux)
-[Redux-Loop](https://github.com/redux-loop/redux-loop)
-[Elm](http://elm-lang.org/)
+如果要學習Redux，強力建議先看下面的Tutorial Video，他的講解清析易懂  
+[Redux Tutorial Video](https://egghead.io/courses/getting-started-with-redux)  
+[Redux中文教學](https://chentsulin.github.io/redux/index.html)  
+[Redux GitHub](https://github.com/reactjs/redux)  
+[Redux-Loop](https://github.com/redux-loop/redux-loop)  
+[Elm](http://elm-lang.org/)  
 [Elm 架構](https://guide.elm-lang.org/architecture/)
